@@ -6,21 +6,20 @@
 <title>Rubella Research Defense 2026</title> 
 <style> 
 :root { 
-  /* الألوان الطبية الفاتحة والمريحة للعين */
-  --primary: #0284c7; /* أزرق طبي */
-  --secondary: #0d9488; /* أخضر مائي (Teal) */
-  --accent-pink: #e11d48; /* أحمر هادئ للتحذيرات */
-  --accent-green: #059669; /* أخضر للنتائج الإيجابية */
-  --dark-bg: #f8fafc; /* خلفية الموقع */
-  --panel-bg: rgba(255, 255, 255, 0.95); /* لون الشرائح أبيض نقي */
-  --text-main: #0f172a; /* لون النصوص الأساسية داكن */
-  --text-muted: #475569; /* لون النصوص الفرعية رمادي غامق */
+  /* الألوان الطبية الفاتحة والمريحة */
+  --primary: #0284c7; 
+  --secondary: #0d9488; 
+  --accent-pink: #e11d48; 
+  --accent-green: #059669; 
+  --dark-bg: #f8fafc; 
+  --panel-bg: rgba(255, 255, 255, 0.95); 
+  --text-main: #0f172a; 
+  --text-muted: #475569; 
 } 
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; } 
 body, html { 
   margin: 0; padding: 0; width: 100%; height: 100%; 
   font-family: 'Segoe UI', Arial, sans-serif; 
-  /* خلفية متحركة بألوان طبية فاتحة */
   background: linear-gradient(-45deg, #e0f2fe, #ccfbf1, #bae6fd, #99f6e4); 
   background-size: 400% 400%; 
   animation: gradientBG 20s ease infinite; 
@@ -32,60 +31,41 @@ body, html {
   50%{background-position:100% 50%} 
   100%{background-position:0% 50%} 
 } 
-@keyframes pulse { 
-  0%,100%{transform:scale(1)} 
-  50%{transform:scale(1.05)} 
-} 
 @keyframes fadeUp { 
   from{opacity:0;transform:translateY(20px)} 
   to{opacity:1;transform:translateY(0)} 
 } 
-/* TOP PROGRESS BAR */ 
-#top-bar { 
-  position:fixed; top:0; left:0; right:0; height:6px; 
-  background:rgba(0,0,0,0.05); z-index:500; 
-} 
-#progress-bar { 
-  height:100%; 
-  background:linear-gradient(90deg,var(--secondary),var(--primary)); 
-  transition:width 0.4s ease; border-radius:0 3px 3px 0; 
-} 
-/* SLIDE COUNTER */ 
+/* شريط التقدم والعداد */ 
+#top-bar { position:fixed; top:0; left:0; right:0; height:6px; background:rgba(0,0,0,0.05); z-index:500; } 
+#progress-bar { height:100%; background:linear-gradient(90deg,var(--secondary),var(--primary)); transition:width 0.4s ease; border-radius:0 3px 3px 0; } 
 #slide-counter-wrap { 
-  position:fixed; top:12px; left:50%; transform:translateX(-50%); 
-  font-size:1rem; color:var(--text-main); font-weight:bold; z-index:400; 
-  background:rgba(255,255,255,0.85); padding:6px 20px; border-radius:30px; 
-  border:1px solid rgba(2, 132, 199, 0.3); backdrop-filter:blur(6px); pointer-events:none; 
-  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  position:fixed; top:12px; left:50%; transform:translateX(-50%); font-size:1rem; color:var(--text-main); 
+  font-weight:bold; z-index:400; background:rgba(255,255,255,0.85); padding:6px 20px; border-radius:30px; 
+  border:1px solid rgba(2, 132, 199, 0.3); backdrop-filter:blur(6px); pointer-events:none; box-shadow: 0 4px 10px rgba(0,0,0,0.05);
 } 
-/* TOOLBAR */ 
+/* الأدوات */ 
 #toolbar { position:fixed; top:10px; right:10px; z-index:400; display:flex; gap:8px; } 
 .tool-btn { 
-  background:rgba(255,255,255,0.7); border:1px solid rgba(2, 132, 199, 0.3); 
-  color:var(--primary); width:42px; height:42px; border-radius:50%; 
-  font-size:1.1rem; cursor:pointer; display:flex; align-items:center; justify-content:center; 
-  transition:all 0.2s; backdrop-filter:blur(6px); box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  background:rgba(255,255,255,0.7); border:1px solid rgba(2, 132, 199, 0.3); color:var(--primary); 
+  width:42px; height:42px; border-radius:50%; font-size:1.1rem; cursor:pointer; display:flex; 
+  align-items:center; justify-content:center; transition:all 0.2s; backdrop-filter:blur(6px); box-shadow: 0 4px 10px rgba(0,0,0,0.05);
 } 
 .tool-btn:hover { background:var(--primary); color:white; transform:scale(1.1); } 
 .tool-btn:active { transform:scale(0.9); } 
-/* SLIDES */ 
+/* الشرائح */ 
 #presentation-container { width:100vw; height:100vh; position:relative; } 
 .slide { 
-  position:absolute; top:0; left:0; width:100%; height:100%; 
-  display:flex; flex-direction:column; align-items:center; justify-content:center; 
-  opacity:0; transition:opacity 0.5s ease, transform 0.5s ease; 
-  transform:scale(0.96) translateX(30px); pointer-events:none; 
-  padding:16px; padding-top:52px; padding-bottom:88px; 
+  position:absolute; top:0; left:0; width:100%; height:100%; display:flex; flex-direction:column; 
+  align-items:center; justify-content:center; opacity:0; transition:opacity 0.5s ease, transform 0.5s ease; 
+  transform:scale(0.96) translateX(30px); pointer-events:none; padding:16px; padding-top:52px; padding-bottom:88px; 
 } 
 .slide.active { opacity:1; transform:scale(1) translateX(0); pointer-events:auto; } 
 .content-box { 
-  background:var(--panel-bg); border:1px solid rgba(2, 132, 199, 0.2); 
-  border-radius:24px; width:94%; max-width:1200px; height:100%; 
-  padding:32px 38px; box-shadow:0 20px 50px rgba(0,0,0,0.08); 
-  display:flex; flex-direction:column; overflow-y:auto; backdrop-filter:blur(10px); 
-  scrollbar-width:thin; scrollbar-color:var(--primary) transparent; 
+  background:var(--panel-bg); border:1px solid rgba(2, 132, 199, 0.2); border-radius:24px; width:94%; 
+  max-width:1200px; height:100%; padding:32px 38px; box-shadow:0 20px 50px rgba(0,0,0,0.08); display:flex; 
+  flex-direction:column; overflow-y:auto; backdrop-filter:blur(10px); scrollbar-width:thin; scrollbar-color:var(--primary) transparent; 
 } 
-/* TYPOGRAPHY */ 
+/* النصوص */ 
 h1,h2,h3 { margin-top:0; font-weight:bold; } 
 h1 { font-size:clamp(1.8rem,4.5vw,3.5rem); color:var(--primary); text-align:center; text-transform:uppercase; letter-spacing:1px; line-height:1.2; } 
 h2 { font-size:clamp(1.4rem,3vw,2.4rem); color:var(--primary); border-bottom:3px solid var(--secondary); padding-bottom:10px; margin-bottom:22px; display:inline-block; } 
@@ -96,75 +76,49 @@ p { font-size:clamp(0.95rem,1.6vw,1.25rem); line-height:1.7; color:var(--text-mu
 ul { font-size:clamp(0.95rem,1.6vw,1.25rem); line-height:1.8; color:var(--text-muted); list-style:none; padding:0; margin:0; } 
 ul li { margin-bottom:10px; position:relative; padding-left:32px; } 
 ul li::before { content:"🔹"; position:absolute; left:0; top:2px; font-size:1rem; opacity: 0.8;} 
-/* BUTTONS */ 
+/* الأزرار */ 
 .btn-interactive { 
-  background:linear-gradient(135deg,var(--primary),var(--secondary)); color:white; 
-  border:none; padding:13px 26px; font-size:clamp(0.9rem,1.4vw,1.15rem); 
-  font-weight:bold; border-radius:50px; cursor:pointer; transition:all 0.3s; 
-  display:inline-flex; align-items:center; justify-content:center; gap:10px; 
-  margin-top:16px; width:100%; box-shadow:0 10px 20px rgba(2, 132, 199, 0.2); 
+  background:linear-gradient(135deg,var(--primary),var(--secondary)); color:white; border:none; padding:13px 26px; 
+  font-size:clamp(0.9rem,1.4vw,1.15rem); font-weight:bold; border-radius:50px; cursor:pointer; transition:all 0.3s; 
+  display:inline-flex; align-items:center; justify-content:center; gap:10px; margin-top:16px; width:100%; box-shadow:0 10px 20px rgba(2, 132, 199, 0.2); 
 } 
 .btn-interactive:hover { box-shadow:0 15px 28px rgba(2, 132, 199, 0.35); transform:translateY(-2px); } 
 .btn-interactive:active { transform:scale(0.96); } 
-/* MODALS */ 
+/* النوافذ المنبثقة */ 
 .modal-overlay { 
-  position:fixed; top:0; left:0; width:100%; height:100%; 
-  background:rgba(255,255,255,0.85); display:flex; align-items:center; justify-content:center; 
-  opacity:0; pointer-events:none; transition:opacity 0.3s; z-index:1000; backdrop-filter:blur(6px); 
+  position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(255,255,255,0.85); display:flex; 
+  align-items:center; justify-content:center; opacity:0; pointer-events:none; transition:opacity 0.3s; z-index:1000; backdrop-filter:blur(6px); 
 } 
 .modal-overlay.active { opacity:1; pointer-events:auto; } 
 .modal-content { 
-  background:#ffffff; padding:38px; border-radius:24px; width:88%; max-width:800px; 
-  border:2px solid var(--primary); position:relative; box-shadow:0 20px 50px rgba(0,0,0,0.15); 
-  animation:fadeUp 0.3s ease; 
+  background:#ffffff; padding:38px; border-radius:24px; width:88%; max-width:800px; border:2px solid var(--primary); 
+  position:relative; box-shadow:0 20px 50px rgba(0,0,0,0.15); animation:fadeUp 0.3s ease; 
 } 
-.close-btn { 
-  position:absolute; top:12px; right:18px; font-size:2.2rem; color:var(--accent-pink); 
-  cursor:pointer; background:none; border:none; font-weight:bold; transition:color 0.2s; 
-} 
+.close-btn { position:absolute; top:12px; right:18px; font-size:2.2rem; color:var(--accent-pink); cursor:pointer; background:none; border:none; font-weight:bold; transition:color 0.2s; } 
 .close-btn:hover { color:#f43f5e; } 
-/* NAV BUTTONS */ 
+/* أزرار التنقل */ 
 .nav-btn { 
-  position:fixed; bottom:20px; background:rgba(255,255,255,0.8); 
-  border:2px solid var(--primary); color:var(--primary); width:62px; height:62px; 
-  border-radius:50%; font-size:1.8rem; cursor:pointer; z-index:300; display:flex; 
-  align-items:center; justify-content:center; font-weight:bold; transition:all 0.25s; 
-  backdrop-filter:blur(6px); box-shadow:0 8px 16px rgba(0,0,0,0.05);
+  position:fixed; bottom:20px; background:rgba(255,255,255,0.9); border:2px solid var(--primary); color:var(--primary); 
+  width:62px; height:62px; border-radius:50%; font-size:1.8rem; cursor:pointer; z-index:300; display:flex; 
+  align-items:center; justify-content:center; font-weight:bold; transition:all 0.25s; backdrop-filter:blur(6px); box-shadow:0 8px 16px rgba(0,0,0,0.05);
 } 
 .nav-btn:hover { background:var(--primary); color:white; transform:scale(1.1); } 
 .nav-btn:active { transform:scale(0.9); } 
 #prev-btn { left:28px; } 
 #next-btn { right:28px; } 
-/* DOTS */ 
-#dots-container { 
-  position:fixed; bottom:32px; left:50%; transform:translateX(-50%); 
-  display:flex; gap:5px; z-index:300; align-items:center; 
-} 
-.dot { 
-  width:8px; height:8px; border-radius:50%; background:rgba(2, 132, 199, 0.2); 
-  cursor:pointer; transition:all 0.3s; border:1px solid rgba(2, 132, 199, 0.4); 
-} 
+#dots-container { position:fixed; bottom:32px; left:50%; transform:translateX(-50%); display:flex; gap:5px; z-index:300; align-items:center; } 
+.dot { width:8px; height:8px; border-radius:50%; background:rgba(2, 132, 199, 0.2); cursor:pointer; transition:all 0.3s; border:1px solid rgba(2, 132, 199, 0.4); } 
 .dot.active { background:var(--primary); transform:scale(1.6); border-color:var(--primary); } 
-/* TABLES & STATS */ 
+/* الجداول والإحصائيات */ 
 table { width:100%; border-collapse:collapse; margin-top:16px; background:rgba(0,0,0,0.02); border-radius:12px; overflow:hidden; } 
 th,td { padding:13px; text-align:left; border-bottom:1px solid rgba(0,0,0,0.05); font-size:clamp(0.9rem,1.4vw,1.15rem); color: var(--text-main); } 
 th { background:var(--primary); color:white; font-weight:bold; } 
-.stat-box { 
-  background:rgba(2, 132, 199, 0.04); padding:18px; border-radius:16px; 
-  text-align:center; border:1px solid rgba(2, 132, 199, 0.15); 
-} 
+.stat-box { background:rgba(2, 132, 199, 0.04); padding:18px; border-radius:16px; text-align:center; border:1px solid rgba(2, 132, 199, 0.15); } 
 .stat-num { font-size:clamp(2rem,4vw,3rem); font-weight:bold; color:var(--primary); display:block; margin-bottom:8px; } 
 .emoji-icon { font-size:clamp(2.5rem,5vw,4.5rem); text-align:center; display:block; margin-bottom:10px; } 
 .title-badge { background:var(--primary); color:white; padding:5px 20px; border-radius:50px; font-weight:bold; display:inline-block; margin-bottom:18px; font-size:clamp(0.9rem,1.4vw,1.1rem); } 
-/* TOAST */ 
-#toast { 
-  position:fixed; bottom:100px; left:50%; transform:translateX(-50%); 
-  background:rgba(2, 132, 199, 0.95); color:white; padding:10px 24px; border-radius:30px; 
-  font-size:1rem; font-weight:bold; z-index:600; opacity:0; pointer-events:none; 
-  transition:opacity 0.3s; white-space:nowrap; box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-} 
+#toast { position:fixed; bottom:100px; left:50%; transform:translateX(-50%); background:rgba(2, 132, 199, 0.95); color:white; padding:10px 24px; border-radius:30px; font-size:1rem; font-weight:bold; z-index:600; opacity:0; pointer-events:none; transition:opacity 0.3s; white-space:nowrap; box-shadow: 0 5px 15px rgba(0,0,0,0.1); } 
 #toast.show { opacity:1; } 
-/* MOBILE */ 
 @media (max-width:680px) { 
   .grid-2,.grid-3 { grid-template-columns:1fr !important; gap:12px !important; } 
   .content-box { padding:18px 16px; border-radius:16px; } 
@@ -248,9 +202,28 @@ th { background:var(--primary); color:white; font-weight:bold; }
 <li><strong>Incubation:</strong> 12 to 23 days before symptoms appear.</li> 
 </ul> 
 </div> 
-<div style="display:flex; flex-direction:column; align-items:center; justify-content:center;"> 
-<img src="http://googleusercontent.com/image_collection/image_retrieval/2976192678734627935" alt="Transmission" style="max-width:100%; max-height:260px; border-radius:16px; box-shadow:0 8px 20px rgba(0,0,0,0.08); margin-bottom:15px; animation:pulse 3s infinite; border: 1px solid #e2e8f0;">
-<p style="color:var(--accent-pink);font-weight:bold;font-size:clamp(1rem,2vw,1.4rem);text-align:center;">Mild for the mother, devastating for the fetus.</p> 
+<div style="display:flex; flex-direction:column; align-items:center; justify-content:center; background: #f1f5f9; border-radius:16px; padding:20px; border: 1px solid #e2e8f0; box-shadow:0 8px 20px rgba(0,0,0,0.05);"> 
+<svg width="100%" height="200" viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    .droplet { fill: #0284c7; animation: fly 2s infinite linear; }
+    @keyframes fly { 0% { transform: translateX(0) scale(1); opacity: 1; } 100% { transform: translateX(120px) scale(0.4); opacity: 0; } }
+    .pulse-alert { animation: pulseAlert 2s infinite; transform-origin: center;}
+    @keyframes pulseAlert { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+  </style>
+  <path d="M 50 180 C 50 100, 150 100, 150 180" fill="#cbd5e1"/>
+  <circle cx="100" cy="70" r="40" fill="#94a3b8"/>
+  <path d="M 125 70 Q 140 70, 135 85" fill="none" stroke="#e11d48" stroke-width="4" stroke-linecap="round" class="pulse-alert"/>
+  <g transform="translate(140, 70)">
+    <circle cx="0" cy="0" r="6" class="droplet" style="animation-delay: 0s;"/>
+    <circle cx="10" cy="-20" r="4" class="droplet" style="animation-delay: 0.5s;"/>
+    <circle cx="20" cy="15" r="5" class="droplet" style="animation-delay: 1s;"/>
+    <circle cx="30" cy="-5" r="7" class="droplet" style="animation-delay: 1.5s;"/>
+  </g>
+  <path d="M 250 180 C 250 100, 350 100, 350 180" fill="#0d9488"/>
+  <circle cx="300" cy="70" r="40" fill="#0d9488"/>
+  <circle cx="325" cy="150" r="25" fill="#ccfbf1"/> 
+</svg>
+<p style="color:var(--accent-pink);font-weight:bold;font-size:clamp(0.9rem,1.8vw,1.3rem);text-align:center; margin-top:10px;">Mild for the mother, devastating for the fetus.</p> 
 </div> 
 </div> 
 </div> 
@@ -300,8 +273,38 @@ th { background:var(--primary); color:white; font-weight:bold; }
 </ul> 
 <button class="btn-interactive" onclick="openModal('modal-structure')">🧬 View Glycoproteins Details</button> 
 </div> 
-<div style="display:flex; justify-content:center; align-items:center;"> 
-<img src="http://googleusercontent.com/image_collection/image_retrieval/1587462993175060317" alt="Virus Structure" style="max-width:100%; max-height:280px; border-radius:16px; box-shadow:0 8px 24px rgba(0,0,0,0.1); border: 1px solid #e2e8f0;">
+<div style="display:flex; justify-content:center; align-items:center; background: white; border-radius:16px; box-shadow:0 8px 24px rgba(0,0,0,0.06); border: 1px solid #e2e8f0; padding:20px;"> 
+<svg width="100%" height="240" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    .spike { stroke: #e11d48; stroke-width: 6; stroke-linecap: round; }
+    .rna { fill: none; stroke: #0284c7; stroke-width: 4; stroke-dasharray: 10, 5; animation: rotateRNA 15s linear infinite; transform-origin: center;}
+    @keyframes rotateRNA { 100% { transform: rotate(360deg); } }
+    .virus-core { animation: pulseCore 4s ease-in-out infinite; transform-origin: center;}
+    @keyframes pulseCore { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.03); } }
+  </style>
+  <g transform="translate(150, 150)">
+    <line x1="0" y1="-85" x2="0" y2="-115" class="spike"/>
+    <line x1="60" y1="-60" x2="81" y2="-81" class="spike"/>
+    <line x1="85" y1="0" x2="115" y2="0" class="spike"/>
+    <line x1="60" y1="60" x2="81" y2="81" class="spike"/>
+    <line x1="0" y1="85" x2="0" y2="115" class="spike"/>
+    <line x1="-60" y1="60" x2="-81" y2="81" class="spike"/>
+    <line x1="-85" y1="0" x2="-115" y2="0" class="spike"/>
+    <line x1="-60" y1="-60" x2="-81" y2="-81" class="spike"/>
+    <line x1="32" y1="-78" x2="44" y2="-107" class="spike" stroke="#f43f5e"/>
+    <line x1="78" y1="-32" x2="107" y2="-44" class="spike" stroke="#f43f5e"/>
+    <line x1="78" y1="32" x2="107" y2="44" class="spike" stroke="#f43f5e"/>
+    <line x1="32" y1="78" x2="44" y2="107" class="spike" stroke="#f43f5e"/>
+    <line x1="-32" y1="78" x2="-44" y2="107" class="spike" stroke="#f43f5e"/>
+    <line x1="-78" y1="32" x2="-107" y2="44" class="spike" stroke="#f43f5e"/>
+    <line x1="-78" y1="-32" x2="-107" y2="-44" class="spike" stroke="#f43f5e"/>
+    <line x1="-32" y1="-78" x2="-44" y2="-107" class="spike" stroke="#f43f5e"/>
+  </g>
+  <circle cx="150" cy="150" r="90" fill="#ccfbf1" stroke="#0d9488" stroke-width="8" class="virus-core"/>
+  <circle cx="150" cy="150" r="70" fill="#f8fafc" stroke="#94a3b8" stroke-width="4" class="virus-core"/>
+  <path d="M 100 150 Q 130 100, 150 150 T 200 150" class="rna"/>
+  <path d="M 110 130 Q 150 190, 180 130" class="rna" style="animation-direction: reverse;"/>
+</svg>
 </div> 
 </div> 
 </div> 
@@ -590,7 +593,6 @@ let currentSlide = 1;
 const totalSlides = 20; 
 let touchStartX = 0, touchStartY = 0; 
 
-// Build dots 
 const dotsContainer = document.getElementById('dots-container'); 
 for (let i = 1; i <= totalSlides; i++) { 
   const d = document.createElement('div'); 
@@ -608,94 +610,50 @@ function showSlide(n) {
 } 
 
 function nextSlide() { 
-  if (currentSlide < totalSlides) { 
-    currentSlide++; showSlide(currentSlide); 
-  } 
+  if (currentSlide < totalSlides) { currentSlide++; showSlide(currentSlide); } 
 } 
-
 function prevSlide() { 
-  if (currentSlide > 1) { 
-    currentSlide--; showSlide(currentSlide); 
-  } 
+  if (currentSlide > 1) { currentSlide--; showSlide(currentSlide); } 
 } 
+function goToSlide(n) { currentSlide = n; showSlide(n); } 
+function openModal(id) { document.getElementById(id).classList.add('active'); } 
+function closeModal(id) { document.getElementById(id).classList.remove('active'); } 
 
-function goToSlide(n) { 
-  currentSlide = n; showSlide(n); 
-} 
-
-function openModal(id) { 
-  document.getElementById(id).classList.add('active'); 
-} 
-
-function closeModal(id) { 
-  document.getElementById(id).classList.remove('active'); 
-} 
-
-// Click to advance 
 document.getElementById('presentation-container').addEventListener('click', function(e) { 
   if (e.target.tagName !== 'BUTTON' && !e.target.closest('button') && !e.target.closest('.modal-content')) 
     nextSlide(); 
 }); 
-
-// Close modal on overlay click 
 document.querySelectorAll('.modal-overlay').forEach(o => o.addEventListener('click', function(e) { 
   if (e.target === this) this.classList.remove('active'); 
 })); 
-
-// Keyboard 
 document.addEventListener('keydown', e => { 
   if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); } 
   if (e.key === 'ArrowLeft') prevSlide(); 
   if (e.key === 'Escape') document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active')); 
   if (e.key === 'f' || e.key === 'F') toggleFullscreen(); 
 }); 
-
-// Touch/Swipe 
 document.addEventListener('touchstart', e => { 
-  touchStartX = e.touches[0].clientX; 
-  touchStartY = e.touches[0].clientY; 
+  touchStartX = e.touches[0].clientX; touchStartY = e.touches[0].clientY; 
 }, { passive: true }); 
-
 document.addEventListener('touchend', e => { 
   const dx = e.changedTouches[0].clientX - touchStartX; 
   const dy = e.changedTouches[0].clientY - touchStartY; 
-  if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 50) { 
-    dx < 0 ? nextSlide() : prevSlide(); 
-  } 
+  if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 50) { dx < 0 ? nextSlide() : prevSlide(); } 
 }, { passive: true }); 
 
 function showToast(msg, ms = 2500) { 
-  const t = document.getElementById('toast'); 
-  t.textContent = msg; 
-  t.classList.add('show'); 
+  const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); 
   setTimeout(() => t.classList.remove('show'), ms); 
 } 
-
 function toggleFullscreen() { 
-  if (!document.fullscreenElement) { 
-    document.documentElement.requestFullscreen().catch(() => showToast('Fullscreen not available')); 
-  } else { 
-    document.exitFullscreen(); 
-  } 
+  if (!document.fullscreenElement) { document.documentElement.requestFullscreen().catch(() => showToast('Fullscreen not available')); } 
+  else { document.exitFullscreen(); } 
 } 
-
-function printSlide() { 
-  showToast('🖨 Opening print dialog...'); 
-  setTimeout(() => window.print(), 500); 
-} 
-
+function printSlide() { showToast('🖨 Opening print dialog...'); setTimeout(() => window.print(), 500); } 
 function sharePresentation() { 
-  if (navigator.share) { 
-    navigator.share({ 
-      title: 'Rubella Research Defense 2026', 
-      text: 'Interactive presentation on Rubella virus prevention during pregnancy.', 
-      url: window.location.href 
-    }); 
-  } else { 
-    navigator.clipboard.writeText(window.location.href).then(() => showToast('🔗 Link copied!')).catch(() => showToast('Copy the URL from your browser')); 
-  } 
+  if (navigator.share) { navigator.share({ title: 'Rubella Research Defense 2026', text: 'Interactive presentation on Rubella virus prevention during pregnancy.', url: window.location.href }); } 
+  else { navigator.clipboard.writeText(window.location.href).then(() => showToast('🔗 Link copied!')).catch(() => showToast('Copy the URL from your browser')); } 
 } 
-
 showSlide(1); 
 </script> 
 </body> 
