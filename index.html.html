@@ -1,0 +1,834 @@
+<!DOCTYPE html> 
+<html lang="en"> 
+<head> 
+<meta charset="UTF-8"> 
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"> 
+<title>Rubella Research Final Master Defense 2026</title> 
+<style> 
+:root { 
+  --primary: #0284c7; 
+  --secondary: #0d9488; 
+  --accent-pink: #e11d48; 
+  --accent-green: #059669; 
+  --accent-gold: #fbbf24;
+  --dark-bg: #f8fafc; 
+  --panel-bg: rgba(255, 255, 255, 0.95); 
+  --text-main: #0f172a; 
+  --text-muted: #334155; 
+} 
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; } 
+body, html { 
+  margin: 0; padding: 0; width: 100%; height: 100%; 
+  font-family: 'Segoe UI', Arial, sans-serif; 
+  background: linear-gradient(-45deg, #e0f2fe, #ccfbf1, #bae6fd, #99f6e4); 
+  background-size: 400% 400%; 
+  animation: gradientBG 20s ease infinite; 
+  overflow: hidden; 
+  color: var(--text-main); 
+} 
+@keyframes gradientBG { 
+  0%{background-position:0% 50%} 
+  50%{background-position:100% 50%} 
+  100%{background-position:0% 50%} 
+} 
+#top-bar { position:fixed; top:0; left:0; right:0; height:6px; background:rgba(0,0,0,0.05); z-index:500; } 
+#progress-bar { height:100%; background:linear-gradient(90deg,var(--secondary),var(--primary)); transition:width 0.4s ease; width: 0%; } 
+#slide-counter-wrap { 
+  position:fixed; top:12px; left:50%; transform:translateX(-50%); font-size:1.4rem; color:var(--text-main); 
+  font-weight:bold; z-index:400; background:rgba(255,255,255,0.95); padding:8px 35px; border-radius:30px; 
+  border:1px solid rgba(2, 132, 199, 0.3); backdrop-filter:blur(6px); pointer-events:none; box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+} 
+
+#toolbar { position:fixed; top:10px; right:10px; z-index:400; display:flex; gap:8px; } 
+.tool-btn { 
+  background:rgba(255,255,255,0.7); border:1px solid rgba(2, 132, 199, 0.3); color:var(--primary); 
+  width:42px; height:42px; border-radius:50%; font-size:1.1rem; cursor:pointer; display:flex; 
+  align-items:center; justify-content:center; transition:all 0.2s; backdrop-filter:blur(6px); box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+} 
+.tool-btn:hover { background:var(--primary); color:white; transform:scale(1.1); } 
+#toast { position:fixed; bottom:100px; left:50%; transform:translateX(-50%); background:rgba(2, 132, 199, 0.95); color:white; padding:10px 24px; border-radius:30px; font-size:1rem; font-weight:bold; z-index:600; opacity:0; pointer-events:none; transition:opacity 0.3s; white-space:nowrap; box-shadow: 0 5px 15px rgba(0,0,0,0.1); } 
+#toast.show { opacity:1; } 
+
+.slide { 
+  position:absolute; top:0; left:0; width:100%; height:100%; display:none; flex-direction:column; 
+  align-items:center; justify-content:center; padding:20px; padding-top:60px; padding-bottom:90px; 
+} 
+.slide.active { display:flex; opacity:1; transform:scale(1); pointer-events:auto; } 
+.content-box { 
+  background:var(--panel-bg); border:1px solid rgba(2, 132, 199, 0.2); border-radius:24px; width:95%; 
+  max-width:1300px; height:94%; padding:45px; box-shadow:0 20px 50px rgba(0,0,0,0.08); display:flex; 
+  flex-direction:column; overflow-y:auto; backdrop-filter:blur(10px); 
+} 
+
+h1 { font-size: clamp(2.4rem, 5.5vw, 4.2rem); color:var(--primary); text-align:center; text-transform:uppercase; margin-bottom:15px; font-weight:800; line-height:1.2; } 
+h2 { font-size: clamp(2rem, 3.8vw, 3rem); color:var(--primary); border-bottom:4px solid var(--secondary); padding-bottom:12px; margin-bottom:25px; display:inline-block; font-weight:700; } 
+h3 { font-size: clamp(1.4rem, 2.5vw, 2rem); color:var(--text-main); margin-bottom:15px; font-weight:700; } 
+p { font-size: clamp(1.3rem, 2vw, 1.65rem); line-height:1.7; color:var(--text-muted); margin-bottom:15px; font-weight:500; } 
+ul { font-size: clamp(1.3rem, 2vw, 1.65rem); line-height:1.8; color:var(--text-muted); list-style:none; padding:0; margin:0; } 
+ul li { margin-bottom:12px; position:relative; padding-left:35px; font-weight:500; } 
+ul li::before { content:"🔹"; position:absolute; left:0; top:2px; font-size:1.2rem; } 
+
+.btn-interactive { 
+  background:linear-gradient(135deg,var(--primary),var(--secondary)); color:white; border:none; padding:14px 28px; 
+  font-size: clamp(1.1rem, 1.6vw, 1.3rem); font-weight:bold; border-radius:50px; cursor:pointer; transition:all 0.3s; 
+  display:inline-flex; align-items:center; justify-content:center; gap:10px; margin-top:15px; width:100%; box-shadow:0 10px 20px rgba(2, 132, 199, 0.2); 
+} 
+.btn-interactive:hover { box-shadow:0 15px 28px rgba(2, 132, 199, 0.35); transform:translateY(-2px); } 
+
+.btn-restart { 
+  background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border: none; 
+  padding: 16px 38px; font-size: 1.4rem; font-weight: bold; border-radius: 60px; cursor: pointer; 
+  margin-top: 25px; transition: 0.3s; box-shadow: 0 10px 25px rgba(2, 132, 199, 0.3); display: inline-flex; align-items: center; gap: 10px;
+}
+.btn-restart:hover { transform: translateY(-3px); box-shadow: 0 15px 35px rgba(2, 132, 199, 0.4); }
+
+.modal-overlay { 
+  position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(15, 23, 42, 0.6); display:none; 
+  align-items:center; justify-content:center; z-index:1000; backdrop-filter:blur(6px); 
+} 
+.modal-overlay.active { display:flex; } 
+.modal-content { 
+  background:#ffffff; padding:40px; border-radius:24px; width:88%; max-width:800px; border:2px solid var(--primary); 
+  position:relative; box-shadow:0 20px 50px rgba(0,0,0,0.15); 
+} 
+.close-btn { position:absolute; top:12px; right:18px; font-size:2.5rem; color:var(--accent-pink); cursor:pointer; background:none; border:none; font-weight:bold; } 
+
+.nav-btn { 
+  position:fixed; bottom:20px; background:rgba(255,255,255,0.95); border:2px solid var(--primary); color:var(--primary); 
+  width:65px; height:62px; border-radius:50%; font-size:2rem; cursor:pointer; z-index:300; display:flex; 
+  align-items:center; justify-content:center; font-weight:bold; transition:all 0.25s; box-shadow:0 8px 16px rgba(0,0,0,0.1);
+} 
+.nav-btn:hover { background:var(--primary); color:white; transform:scale(1.1); } 
+#prev-btn { left:28px; } 
+#next-btn { right:28px; } 
+#dots-container { position:fixed; bottom:32px; left:50%; transform:translateX(-50%); display:flex; gap:6px; z-index:300; align-items:center; } 
+.dot { width:10px; height:10px; border-radius:50%; background:rgba(2, 132, 199, 0.2); cursor:pointer; transition:all 0.3s; border:1px solid rgba(2, 132, 199, 0.4); } 
+.dot.active { background:var(--primary); transform:scale(1.6); border-color:var(--primary); } 
+
+.grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:28px; align-items:center; } 
+.grid-3 { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; } 
+
+.medical-img-container { display: flex; justify-content: center; align-items: center; background: #f8fafc; border-radius: 16px; padding: 10px; border: 1px dashed #cbd5e1; margin-top: auto; width: 100%; height: auto; max-height: 250px; overflow: hidden; } 
+.medical-img { max-width: 100%; max-height: 230px; border-radius: 12px; box-shadow: 0 8px 20px rgba(0,0,0,0.08); border: 3px solid white; object-fit: contain; } 
+
+.chart-wrapper { width: 100%; height: 280px; display: flex; align-items: flex-end; justify-content: space-around; padding-bottom: 40px; margin-top: 20px; border-bottom: 2px solid #cbd5e1; position: relative; }
+.chart-col { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; width: 15%; position: relative; }
+.bar { width: 100%; background: var(--primary); border-radius: 8px 8px 0 0; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 8px rgba(0,0,0,0.1); position: relative; display: flex; justify-content: center; }
+.bar.peak { background: var(--accent-pink); }
+.bar:hover { filter: brightness(1.1); transform: scaleY(1.02); }
+
+.bar-value { position: absolute; top: -35px; background: #0f172a; color: white; padding: 5px 10px; border-radius: 6px; font-weight: bold; font-size: 0.95rem; opacity: 0; pointer-events: none; transition: all 0.3s ease; white-space: nowrap; z-index: 10; }
+.bar-value::after { content: ''; position: absolute; bottom: -5px; left: 50%; transform: translateX(-50%); border-width: 5px 5px 0; border-style: solid; border-color: #0f172a transparent transparent transparent; }
+.bar:hover .bar-value, .sub-bar:hover .bar-value { opacity: 1; top: -45px; }
+
+.bar-label { position: absolute; bottom: -30px; font-weight: bold; color: var(--text-main); font-size: 1.1rem; text-align: center; width: 100%; }
+.grouped-bars { display: flex; gap: 8px; align-items: flex-end; width: 100%; height: 100%; justify-content: center; }
+.sub-bar { width: 45%; border-radius: 6px 6px 0 0; position: relative; display: flex; justify-content: center; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: all 0.3s; }
+.sub-bar.live { background: var(--secondary); }
+.sub-bar.misc { background: var(--accent-pink); }
+.sub-bar:hover { filter: brightness(1.1); }
+
+.chart-legend { display: flex; justify-content: center; gap: 20px; margin-bottom: 10px; }
+.legend-item { display: flex; align-items: center; gap: 8px; font-weight: bold; color: var(--text-main); font-size: 1.1rem; }
+.legend-color { width: 16px; height: 16px; border-radius: 4px; }
+.pie-chart { width: 160px; height: 160px; border-radius: 50%; background: conic-gradient(var(--accent-pink) 0% 56.3%, var(--secondary) 56.3% 100%); box-shadow: 0 8px 16px rgba(0,0,0,0.15); }
+.stat-box { background:rgba(2, 132, 199, 0.04); padding:22px; border-radius:16px; text-align:center; border:1px solid rgba(2, 132, 199, 0.15); display:flex; flex-direction:column; align-items:center;} 
+.title-badge { background:var(--primary); color:white; padding:6px 24px; border-radius:50px; font-weight:bold; display:inline-block; margin-bottom:18px; font-size:1.2rem; } 
+
+/* الرسوم الحركية التفاعلية */
+.droplet { fill: #0284c7; animation: fly 2s infinite linear; }
+@keyframes fly { 0% { transform: translateX(0) scale(1); opacity: 1; } 100% { transform: translateX(120px) scale(0.4); opacity: 0; } }
+.spike { stroke: #e11d48; stroke-width: 6; stroke-linecap: round; }
+.rna { fill: none; stroke: #0284c7; stroke-width: 4; stroke-dasharray: 10, 5; animation: rotateRNA 15s linear infinite; transform-origin: center;}
+@keyframes rotateRNA { 100% { transform: rotate(360deg); } }
+.virus-core { animation: pulseCore 4s ease-in-out infinite; transform-origin: center;}
+@keyframes pulseCore { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.03); } }
+.eye-cataract { animation: cloud 3s infinite alternate ease-in-out; }
+@keyframes cloud { 0% { fill: rgba(226, 232, 240, 0.4); } 100% { fill: rgba(226, 232, 240, 0.95); } }
+.heart-beat { animation: heartbeat 1.5s infinite; transform-origin: center; }
+@keyframes heartbeat { 0%, 100% { transform: scale(1); } 15% { transform: scale(1.15); } 30% { transform: scale(1); } 45% { transform: scale(1.15); } }
+.sound-wave { animation: broadcast 2s infinite linear; }
+@keyframes broadcast { 0% { opacity: 1; transform: translateX(0) scale(1); } 100% { opacity: 0; transform: translateX(-15px) scale(1.5); } }
+.immune-shield-vit { animation: pulseVit 2.5s ease-in-out infinite alternate; transform-origin: center; }
+.molecule-bond-vit { stroke-dasharray: 8; animation: bondFlowVit 2s linear infinite; }
+@keyframes pulseVit { 0% { transform: scale(1); opacity: 0.85; } 100% { transform: scale(1.04); opacity: 1; } }
+@keyframes bondFlowVit { to { stroke-dashoffset: -16; } }
+</style> 
+</head> 
+<body> 
+<div id="top-bar"><div id="progress-bar"></div></div> 
+<div id="slide-counter-wrap"><span id="current-slide-num">1</span> / <span id="total-slides-num">24</span></div> 
+
+<div id="toolbar"> 
+<button class="tool-btn" onclick="toggleFullscreen()" title="Fullscreen (F)">⛶</button> 
+<button class="tool-btn" onclick="printSlide()" title="Print / Save PDF">🖨</button> 
+<button class="tool-btn" onclick="sharePresentation()" title="Copy Link">🔗</button> 
+</div> 
+<div id="toast"></div> 
+
+<button class="nav-btn" id="prev-btn" onclick="prevSlide()">❮</button> 
+<button class="nav-btn" id="next-btn" onclick="nextSlide()">❯</button> 
+<div id="dots-container"></div> 
+
+<div id="presentation-container"> 
+
+<div class="slide active"> 
+<div class="content-box" style="justify-content:center;text-align:center;border:2px solid var(--primary);"> 
+<div class="title-badge">Graduation Research 2026</div> 
+<h1>Rubella Virus Infection<br>During Pregnancy and Its Impact on Fetal Outcome</h1> 
+<p style="font-size:1.6rem;color:var(--primary);font-weight:bold;margin-top:15px;">Impact on Fetal Outcome: A Study in Baghdad</p> 
+<div style="margin-top:25px;display:grid;grid-template-columns:1fr 1fr;gap:36px;background:rgba(2, 132, 199, 0.05);padding:30px;border-radius:20px;border:1px solid rgba(2, 132, 199, 0.1);"> 
+<div style="text-align:right;border-right:2px solid var(--primary);padding-right:26px;"> 
+<h3 style="color:var(--primary); font-size:1.5rem;">Researchers:</h3> 
+<p style="font-size:1.2rem;line-height:1.6;color:var(--text-muted);">Hawraa Jabar, Tabark Saleh, Aya Ayad,<br>Ali Rahman, Saja Zuhair, Zahra Salem,<br>Hussein Saad, Radwan Mohamed,<br>Heba Salam, Muntadher Ali</p> 
+</div> 
+<div style="text-align:left;padding-left:26px;"> 
+<h3 style="color:var(--primary); font-size:1.5rem;">Supervisor:</h3> 
+<p style="font-size:1.4rem;font-weight:bold;color:var(--text-main);">Assist. Lec. Ayat Abbas Mohammed</p> 
+<p style="font-size:1.2rem;margin-top:14px;font-style:italic;color:var(--text-muted);">OSOL AL-DEEN University<br>College of Health and Medical Technologies</p> 
+</div> 
+</div> 
+</div> 
+</div> 
+
+<div class="slide"> 
+<div class="content-box"> 
+<h2>Introduction: What is Rubella?</h2> 
+<div class="grid-2"> 
+<div> 
+<p>Rubella (German Measles) is a contagious respiratory infection. It typically presents as a mild, self-limiting disease in children and adults, characterized by a distinct maculopapular rash.</p> 
+<ul> 
+<li><strong>Name Origin:</strong> From Latin meaning "Little Red".</li> 
+<li><strong>Transmission:</strong> Airborne respiratory droplets.</li> 
+<li><strong>Incubation:</strong> 14 to 21 days before symptoms appear.</li> 
+</ul> 
+<div class="medical-img-container">
+    <img src="Rash.jpg" alt="Rubella Rash Clinical View 1" class="medical-img">
+</div>
+</div> 
+<div style="display:flex; flex-direction:column; align-items:center; justify-content:center; background: #f1f5f9; border-radius:16px; padding:20px; border: 1px solid #e2e8f0; box-shadow:0 8px 20px rgba(0,0,0,0.05); height: 100%;"> 
+<svg width="100%" height="200" viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+  <path d="M 50 180 C 50 100, 150 100, 150 180" fill="#cbd5e1"/>
+  <circle cx="100" cy="70" r="40" fill="#94a3b8"/>
+  <path d="M 125 70 Q 140 70, 135 85" fill="none" stroke="#e11d48" stroke-width="4" stroke-linecap="round"/>
+  <g transform="translate(140, 70)">
+    <circle cx="0" cy="0" r="6" class="droplet" style="animation-delay: 0s;"/>
+    <circle cx="10" cy="-20" r="4" class="droplet" style="animation-delay: 0.5s;"/>
+    <circle cx="20" cy="15" r="5" class="droplet" style="animation-delay: 1s;"/>
+  </g>
+  <path d="M 250 180 C 250 100, 350 100, 350 180" fill="#0d9488"/>
+  <circle cx="300" cy="70" r="40" fill="#0d9488"/>
+</svg>
+<p style="color:var(--accent-pink);font-weight:bold;font-size:1.5rem;text-align:center; margin-top:10px;">Mild for the mother, devastating for the fetus.</p> 
+</div> 
+</div> 
+</div> 
+</div> 
+
+<div class="slide"> 
+<div class="content-box"> 
+<h2>Morphology & Structure</h2> 
+<div class="grid-2"> 
+<div> 
+<ul> 
+<li><strong>Shape:</strong> Spherical to pleomorphic (50–70 nm).</li> 
+<li><strong>Genome:</strong> Single-stranded, positive-sense RNA [(+)ssRNA].</li> 
+<li><strong>Envelope:</strong> Host-derived lipid bilayer containing viral spikes.</li> 
+</ul> 
+<div class="medical-img-container" style="max-height: 120px; margin-top: 15px;">
+    <img src="virus_morphology.jpg" alt="Electron Micrograph of Rubella Virus" class="medical-img" style="max-height: 100px;">
+</div>
+<button class="btn-interactive" onclick="openModal('modal-structure')" style="margin-top: 15px;">🧬 View Glycoproteins Details</button> 
+</div> 
+<div style="display:flex; justify-content:center; align-items:center; background: white; border-radius:16px; box-shadow:0 8px 24px rgba(0,0,0,0.06); border: 1px solid #e2e8f0; padding:20px;"> 
+<svg width="100%" height="240" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+  <g transform="translate(150, 150)">
+    <line x1="0" y1="-85" x2="0" y2="-115" class="spike"/>
+    <line x1="60" y1="-60" x2="81" y2="-81" class="spike"/>
+    <line x1="85" y1="0" x2="115" y2="0" class="spike"/>
+    <line x1="0" y1="85" x2="0" y2="115" class="spike"/>
+    <line x1="-85" y1="0" x2="-115" y2="0" class="spike"/>
+    <line x1="32" y1="-78" x2="44" y2="-107" class="spike" stroke="#f43f5e"/>
+    <line x1="78" y1="-32" x2="107" y2="-44" class="spike" stroke="#f43f5e"/>
+  </g>
+  <circle cx="150" cy="150" r="90" fill="#ccfbf1" stroke="#0d9488" stroke-width="8" class="virus-core"/>
+  <path d="M 100 150 Q 130 100, 150 150 T 200 150" class="rna"/>
+  <path d="M 110 130 Q 150 190, 180 130" class="rna" style="animation-direction: reverse; stroke: #0d9488;"/>
+</svg>
+</div> 
+</div> 
+</div> 
+</div> 
+
+<div class="slide"> 
+<div class="content-box" style="text-align:center;"> 
+<h2>Effect on Pregnancy: The Teratogenic Risk Zone</h2> 
+<div class="grid-2" style="width:100%; text-align: left; margin-top:5px;">
+  <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+    <svg width="180" height="180" viewBox="0 0 200 200" style="margin: 0 auto;">
+      <circle cx="100" cy="100" r="85" fill="rgba(225, 29, 72, 0.06)" stroke="var(--accent-pink)" stroke-width="5" class="heart-beat"/>
+      <text x="100" y="105" text-anchor="middle" font-weight="900" font-size="38" fill="var(--accent-pink)">90%</text>
+      <text x="100" y="135" text-anchor="middle" font-weight="700" font-size="12" fill="var(--accent-pink)">Risk Zone</text>
+    </svg>
+    <p style="font-size:1.4rem;color:var(--text-main); margin-top:20px; line-height: 1.6; text-align: center;">If maternal infection occurs during the <strong style="color:var(--accent-pink);">first 10-12 weeks of gestation</strong>, the virus crosses the placental barrier unhindered.</p> 
+  </div>
+  <div class="medical-img-container" style="max-height: 250px; width: 100%;">
+      <img src="Rash2.jpg" alt="Rubella Rash Clinical View 2" class="medical-img" style="max-height: 230px;">
+  </div>
+</div>
+</div> 
+</div> 
+
+<div class="slide"> 
+<div class="content-box"> 
+<h2>Pathogenesis & Spread</h2> 
+<div class="grid-2" style="align-items:start;"> 
+<div> 
+<h3 style="color:var(--primary); font-size:1.6rem;">Maternal Infection</h3> 
+<ul> 
+<li>Virus enters respiratory tract.</li> 
+<li>Replicates in nasopharyngeal cells and regional lymph nodes.</li> 
+<li>Viremia occurs (5-7 days post-infection), spreading to internal organs and skin.</li> 
+</ul> 
+</div> 
+<div style="background:rgba(225, 29, 72, 0.05); border-radius:16px; padding:25px; border:1px solid rgba(225, 29, 72, 0.2);"> 
+<h3 style="color:var(--accent-pink); font-size:1.6rem;">Fetal Infection</h3> 
+<ul> 
+<li>During viremia, virus infects the placenta (Placentitis).</li> 
+<li>Enters fetal circulation causing widespread cellular damage.</li> 
+<li>Inhibits cellular mitosis and induces apoptosis in developing fetal organs.</li> 
+</ul> 
+</div> 
+</div> 
+</div> 
+</div> 
+
+<div class="slide"> 
+<div class="content-box" style="text-align:center; justify-content: center;"> 
+<h2 style="font-size:2.8rem;">Congenital Rubella Syndrome (CRS)</h2> 
+<p style="font-size:1.7rem; max-width:900px; margin: 20px auto; color:var(--text-main); line-height: 1.8;">When the virus infects the developing fetus, it results in a specific group of severe birth defects known as the <strong>Classic Teratogenic Triad</strong>.</p> 
+<p style="font-size:1.5rem; color:var(--accent-pink); font-weight:bold;">Let's explore these major conditions visually ⬇</p> 
+</div> 
+</div> 
+
+<div class="slide"> 
+<div class="content-box" style="justify-content:center; align-items:center; text-align:center;"> 
+<h2 style="color:var(--primary);">1. Ocular Defects (Cataract)</h2> 
+<div class="grid-2" style="width: 100%;">
+  <div style="background:white; padding:20px; border-radius:24px; box-shadow:0 10px 30px rgba(0,0,0,0.05); border: 2px solid #e2e8f0; height: 180px; display: flex; justify-content: center; align-items: center;"> 
+      <svg width="220" height="140" viewBox="0 0 260 150" xmlns="http://www.w3.org/2000/svg"> 
+          <path d="M 10 75 Q 100 10, 190 75 Q 100 140, 10 75 Z" fill="#f8fafc" stroke="#0284c7" stroke-width="6"/> 
+          <circle cx="100" cy="75" r="35" fill="#0f172a"/> 
+          <circle cx="100" cy="75" r="30" class="eye-cataract"/> 
+          <path d="M 110 50 Q 145 20, 190 32" fill="none" stroke="#e11d48" stroke-width="3" stroke-dasharray="5,5"/> 
+          <text x="195" y="37" fill="#e11d48" font-weight="bold" font-size="15">Clouding</text> 
+      </svg> 
+  </div> 
+  <div class="medical-img-container" style="max-height: 180px;">
+      <img src="cataract.jpg" alt="Congenital Cataract CRS" class="medical-img" style="max-height: 160px;">
+  </div>
+</div>
+<p style="font-size:1.5rem; color:var(--text-main); font-weight:bold; margin-top:20px;"> 
+    Development of <span style="color:var(--accent-pink);">Cataracts</span> (clouding of the lens), Microphthalmia, and Congenital Glaucoma, often affecting both eyes. 
+</p> 
+</div> 
+</div> 
+
+<div class="slide"> 
+<div class="content-box" style="justify-content:center; align-items:center; text-align:center;"> 
+<h2 style="color:var(--primary);">2. Auditory Defects (Deafness)</h2> 
+<div style="background:white; padding:25px; border-radius:24px; box-shadow:0 10px 30px rgba(0,0,0,0.1); border: 2px solid #e2e8f0; margin-bottom:20px; height: 170px; display: flex; justify-content: center; align-items: center;"> 
+    <svg width="180" height="130" viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg"> 
+        <path d="M 90 20 C 120 20, 140 40, 140 70 C 140 100, 120 130, 95 140 C 75 148, 60 130, 60 110 C 60 90, 80 90, 80 75 C 80 60, 65 60, 65 40 C 65 25, 75 20, 90 20 Z" fill="#e0f2fe" stroke="#0284c7" stroke-width="5" stroke-linejoin="round"/> 
+        <path d="M 105 45 C 125 50, 120 75, 105 85 C 95 90, 80 85, 80 75" fill="none" stroke="#0284c7" stroke-width="4" stroke-linecap="round"/> 
+        <path d="M 180 50 Q 150 75, 180 100" fill="none" stroke="#94a3b8" stroke-width="4" class="sound-wave"/> 
+        <path d="M 160 60 Q 140 75, 160 90" fill="none" stroke="#94a3b8" stroke-width="4" class="sound-wave" style="animation-delay: 0.5s;"/>
+        <line x1="135" y1="60" x2="165" y2="90" stroke="#e11d48" stroke-width="6" stroke-linecap="round"/> 
+        <line x1="165" y1="60" x2="135" y2="90" stroke="#e11d48" stroke-width="6" stroke-linecap="round"/> 
+    </svg> 
+</div> 
+<p style="font-size:1.6rem; color:var(--text-main); font-weight:bold;"> 
+    <span style="color:var(--accent-pink);">Sensorineural Hearing Loss</span> is the most common standalone defect, affecting up to 60% of infected infants. 
+</p> 
+</div> 
+</div> 
+
+<div class="slide"> 
+<div class="content-box" style="justify-content:center; align-items:center; text-align:center;"> 
+<h2 style="color:var(--primary);">3. Cardiac Defects & High Risk Windows</h2> 
+<div class="grid-2" style="width: 100%;">
+  <div style="background:white; padding:15px; border-radius:24px; box-shadow:0 10px 30px rgba(0,0,0,0.05); border: 2px solid #e2e8f0; height: 180px; display: flex; justify-content: center; align-items: center;"> 
+      <svg width="180" height="120" viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg" class="heart-beat"> 
+          <path d="M 100 140 C 100 140, 20 90, 20 50 C 20 20, 60 10, 100 40 C 140 10, 180 20, 180 50 C 180 90, 100 140, 100 140 Z" fill="#e11d48"/> 
+          <path d="M 100 40 Q 120 5, 140 0" fill="none" stroke="#0284c7" stroke-width="12" stroke-linecap="round"/> 
+          <path d="M 60 40 Q 80 5, 100 0" fill="none" stroke="#0d9488" stroke-width="12" stroke-linecap="round"/> 
+          <circle cx="120" cy="20" r="10" fill="#fbbf24" stroke="#0f172a" stroke-width="2" class="pulse-gold"/> 
+          <text x="135" y="25" fill="#0f172a" font-weight="bold" font-size="16">PDA</text> 
+      </svg> 
+  </div> 
+  <div class="medical-img-container" style="max-height: 180px;">
+      <img src="crs_baby.jpg" alt="CRS Affected Baby Microcephaly Study" class="medical-img" style="max-height: 160px;">
+  </div>
+</div>
+<p style="font-size:1.4rem; color:var(--text-main); font-weight:bold; margin-top:15px;"> 
+    Structural heart conditions, primarily <span style="color:var(--accent-pink);">Patent Ductus Arteriosus (PDA)</span>, coupled with microcephaly risks in the first trimester. 
+</p> 
+</div> 
+</div> 
+
+<div class="slide"> 
+<div class="content-box"> 
+<h2>Neurological & Late Manifestations</h2> 
+<div class="grid-2"> 
+<div> 
+<h3 style="color:var(--primary); font-size:1.6rem;">Neurological Impact</h3> 
+<ul> 
+<li>Microcephaly (abnormally small head).</li> 
+<li>Intellectual disability and developmental delays.</li> 
+<li><strong>Progressive Rubella Panencephalitis (PRP):</strong> A rare, fatal late-onset neurological deterioration.</li> 
+</ul> 
+</div> 
+<div style="background:rgba(225, 29, 72, 0.05);padding:26px;border-radius:20px;border:1px solid rgba(225, 29, 72, 0.2);"> 
+<h3 style="color:var(--accent-pink); font-size:1.6rem;">The Autism Link</h3> 
+<p>Studies (e.g., Stella Chess) found a significantly higher prevalence of autism spectrum behaviors in children born with CRS compared to the general population.</p> 
+</div> 
+</div> 
+</div> 
+</div> 
+
+<div class="slide"> 
+<div class="content-box"> 
+<h2>Relationship Between RuV & Vitamin A</h2> 
+<div class="grid-2" style="align-items:center; gap:30px;"> 
+<div> 
+<p>The liver is the principal organ responsible for Vitamin A homeostasis, storing approximately eighty percent of total body reserves, primarily within hepatic stellate cells.</p> 
+<ul> 
+<li>Rubella virus targets the respiratory system but significantly disrupts liver function, causing issues ranging from jaundice to rare hepatic failure.</li> 
+<li>This localized cellular destruction triggers an uncontrolled release of stored retinoids right into the blood.</li> 
+<li>This cascade induces a highly volatile state of <strong>Functional Hypervitaminosis A</strong>.</li> 
+</ul> 
+</div> 
+<div style="background:white; padding:20px; border-radius:24px; box-shadow:0 10px 30px rgba(0,0,0,0.05); border: 2px solid #e2e8f0; display:flex; flex-direction:column; align-items:center; height: 180px; justify-content: center;"> 
+    <div class="immune-shield-vit">
+      <svg width="180" height="130" viewBox="0 0 200 160">
+        <circle cx="100" cy="80" r="30" fill="var(--accent-gold)"/>
+        <text x="100" y="84" text-anchor="middle" font-weight="bold" font-size="12" fill="#92400e">Vit A</text>
+        <line x1="100" y1="50" x2="100" y2="20" stroke="#0284c7" stroke-width="3" class="molecule-bond-vit"/>
+        <line x1="130" y1="80" x2="160" y2="80" stroke="#0284c7" stroke-width="3" class="molecule-bond-vit"/>
+        <g class="immune-shield-vit" style="animation-delay: 0s;">
+          <circle cx="100" cy="20" r="12" fill="#0d9488"/>
+          <text x="100" y="23" text-anchor="middle" font-size="7" fill="white">T-Cell</text>
+        </g>
+        <g class="immune-shield-vit" style="animation-delay: 0.4s;">
+          <circle cx="160" cy="80" r="13" fill="#0284c7"/>
+          <text x="160" y="83" text-anchor="middle" font-size="6" fill="white">Barrier</text>
+        </g>
+      </svg>
+    </div>
+    <p style="font-weight:bold; color:var(--secondary); margin-top:10px; font-size:0.95rem;">Supportive Retinoid Pathway Complex</p>
+</div> 
+</div> 
+</div> 
+</div> 
+
+<div class="slide"> 
+<div class="content-box"> 
+<h2>Laboratory Diagnosis & Screening</h2> 
+<div class="grid-2"> 
+<div> 
+<h3 style="color:var(--primary); font-size:1.4rem;">Serological Rapid Cassette Testing</h3> 
+<p>In our laboratory workflow, Rubella-specific IgG and IgM antibodies were detected using a standardized Torch test cassette immunoassay:</p> 
+<ul> 
+<li><strong>Procedure:</strong> $10\ \mu\text{L}$ of patient serum is added to the sample well using a micropipette.</li> 
+<li><strong>Buffer Matrix:</strong> $70\ \mu\text{L}$ of specialized reagent buffer from the kit is introduced.</li> 
+<li><strong>Reaction Time:</strong> Left for exactly 15 minutes to allow proper lateral flow reaction.</li> 
+</ul> 
+<div class="medical-img-container" style="max-height: 110px; margin-top: 5px;">
+    <img src="lab_testing.jpg" alt="Laboratory ELISA Diagnostic Testing" class="medical-img" style="max-height: 100px;">
+</div>
+</div> 
+<div style="background:rgba(2, 132, 199, 0.05);padding:26px;border-radius:20px;border:1px solid rgba(2, 132, 199, 0.15); height: 100%; display: flex; flex-direction: column; justify-content: center;"> 
+<h3 style="color:var(--secondary); font-size:1.4rem;">Confirmatory Diagnostics</h3> 
+<ul> 
+<li><strong>IgG Avidity Test:</strong> Utilized in unclear gestational conditions to distinguish between active acute infections (Low Avidity) and historical baseline exposure (High Avidity).</li> 
+<li><strong>RT-PCR:</strong> Molecular detection of viral RNA in amniotic fluid or blood. The gold standard to definitively confirm prenatal CRS.</li> 
+</ul> 
+</div> 
+</div> 
+</div> 
+</div> 
+
+<div class="slide"> 
+<div class="content-box"> 
+<h2>Rubella Virus Treatment Protocols</h2> 
+<div class="grid-3" style="margin-top:20px;"> 
+<div class="stat-box" style="background:white; border-top:4px solid var(--accent-pink); text-align:left; align-items:start;"><span style="font-size:1.5rem; margin-bottom:8px;">❌</span><h3 style="color:var(--accent-pink); font-size:1.1rem;">No Specific Antiviral</h3><p style="font-size:0.95rem; margin:0;">There is no specific antiviral treatment to eradicate the virus. Medical management focuses entirely on supportive therapies.</p></div> 
+<div class="stat-box" style="background:white; border-top:4px solid var(--primary); text-align:left; align-items:start;"><span style="font-size:1.5rem; margin-bottom:8px;">🩹</span><h3 style="color:var(--primary); font-size:1.1rem;">Symptomatic Relief</h3><p style="font-size:0.95rem; margin:0;">Paracetamol serves as the primary safe option for fever and discomfort across all profiles, including pregnant women. Antihistamines like Cetirizine alleviate rash itching.</p></div> 
+<div class="stat-box" style="background:white; border-top:4px solid var(--secondary); text-align:left; align-items:start;"><span style="font-size:1.5rem; margin-bottom:8px;">🚪</span><h3 style="color:var(--secondary); font-size:1.1rem;">Strict Isolation</h3><p style="font-size:0.95rem; margin:0;">Isolation for approximately one week after the maculopapular rash appears is mandatory to halt immediate transmission within public domains.</p></div> 
+</div> 
+</div> 
+</div> 
+
+<div class="slide"> 
+<div class="content-box"> 
+<h2>Prevention & Immunization Strategies</h2> 
+<div class="grid-2"> 
+<div> 
+<p>Since no specific cure exists, public medical efforts are entirely focused on preemptive immunological defense.</p> 
+<ul> 
+<li><strong>The MMR Vaccine:</strong> A highly effective 2-dose schedule using the live-attenuated Wistar RA 27/3 strain to provide robust, lifelong immunity.</li> 
+<li><strong>Mechanism:</strong> It closely mimics natural infection, inducing an incredibly strong systemic and mucosal immune barrier.</li> 
+</ul> 
+</div> 
+<div style="background:rgba(5, 150, 105, 0.05); padding:24px; border-radius:20px; border:1px solid rgba(5, 150, 105, 0.2);"> 
+<h3 style="color:var(--accent-green); font-size:1.5rem;">Critical Pre-Conception Controls:</h3> 
+<ul> 
+<li><strong>Pre-Marital Screening:</strong> Non-immune women must be systematically identified via laboratory antibody tracking before approval.</li> 
+<li><strong>Strict Contraindication:</strong> MMR is strictly forbidden during pregnancy. Women must avoid conception for 28 days post-injection.</li> 
+</ul> 
+</div> 
+</div> 
+</div> 
+</div> 
+
+<div class="slide"> 
+<div class="content-box" style="justify-content:center;"> 
+<h2>Aims of the Study</h2> 
+<div class="grid-3"> 
+<div class="stat-box"><span style="font-size:2rem;">🧪</span><h3 style="color:var(--text-main); font-size:1.4rem;">1. Clinical Detection</h3><p style="font-size:1.1rem;">Detect Rubella-specific antibodies (IgG/IgM) among pregnant women with obstetric complications.</p></div> 
+<div class="stat-box"><span style="font-size:2rem;">📉</span><h3 style="color:var(--text-main); font-size:1.4rem;">2. Risk Evaluation</h3><p style="font-size:1.1rem;">Understand the direct correlation between RuV infection and rates of recurrent miscarriages.</p></div> 
+<div class="stat-box"><span style="font-size:2rem;">📢</span><h3 style="color:var(--text-main); font-size:1.4rem;">3. Public Awareness</h3><p style="font-size:1.1rem;">Emphasize the critical need for pre-marital screening and MMR vaccination coverage.</p></div> 
+</div> 
+</div> 
+</div> 
+
+<div class="slide"> 
+<div class="content-box"> 
+<h2>Research Methodology & Procedure</h2> 
+<div class="grid-2"> 
+<div> 
+<h3 style="color:var(--primary); font-size:1.5rem;">Study Design & Sample</h3> 
+<ul> 
+<li><strong>Sample:</strong> 75 pregnant women with history of obstetric complications.</li> 
+<li><strong>Collection Period:</strong> October 2025 – February 2026.</li> 
+<li><strong>Location:</strong> Hospitals in Baghdad Governorate.</li> 
+</ul> 
+</div> 
+<div style="background:rgba(2, 132, 199, 0.05);padding:26px;border-radius:20px;text-align:center;border:1px solid rgba(2, 132, 199, 0.15);"> 
+<span style="font-size:2.5rem;">🩸</span> 
+<h3 style="color:var(--primary); font-size:1.5rem;">Laboratory Work</h3> 
+<p>Venous blood was drawn and centrifuged to extract serum.</p> 
+<p>We utilized the <strong>Rubella IgG/IgM Rapid Test Cassette</strong> (lateral flow immunoassay) for antibody detection.</p> 
+<button class="btn-interactive" style="width: auto; padding: 10px 20px; font-size: 1.1rem;" onclick="openModal('modal-lab')">📊 View Cassette Interpretation</button> 
+</div> 
+</div> 
+</div> 
+</div> 
+
+<div class="slide"> 
+<div class="content-box" style="justify-content:center;"> 
+<h1 style="font-size:2.8rem; margin-bottom:20px;">Results</h1> 
+<h2>Demographic Data & Miscarriage Rate</h2> 
+<div class="grid-2"> 
+<div> 
+<p style="margin-bottom:16px; font-size:1.3rem;">Descriptive statistics of the 75 participating women:</p> 
+<ul style="font-size:1.3rem;"> 
+<li><strong>Mean Age:</strong> 27.7 ± 7.43 Years (Range: 16-46).</li> 
+<li><strong>Mean Miscarriages:</strong> 1.61 per participant.</li> 
+<li><strong>Mean Live Births:</strong> 2.54 per participant.</li> 
+</ul> 
+</div> 
+<div class="stat-box" style="border-color:var(--primary); padding:24px; background:white; box-shadow:0 8px 16px rgba(0,0,0,0.04);"> 
+    <h3 style="color:var(--primary); margin-bottom:15px; font-size:1.4rem;">Recurrent Miscarriage Rate</h3> 
+    <div class="pie-chart" title="56.3% Experienced 2+ Miscarriages"></div> 
+    <div style="display: flex; flex-direction: column; gap: 8px; width: 100%; text-align: left; padding-left: 20px; margin-top:20px;"> 
+        <div style="display: flex; align-items: center; gap: 8px;"> 
+            <div style="width: 14px; height: 14px; background: var(--accent-pink); border-radius: 4px;"></div> 
+            <span style="font-size: 1rem; font-weight: bold; color:var(--text-main);">2+ Miscarriages (56.3%)</span> 
+        </div> 
+        <div style="display: flex; align-items: center; gap: 8px;"> 
+            <div style="width: 14px; height: 14px; background: var(--secondary); border-radius: 4px;"></div> 
+            <span style="font-size: 1rem; font-weight: bold; color:var(--text-main);">1 Miscarriage (43.7%)</span> 
+        </div> 
+    </div> 
+</div> 
+</div> 
+</div> 
+</div> 
+
+<div class="slide"> 
+<div class="content-box"> 
+<h2>Results: Miscarriage by Age Group</h2> 
+<p style="color:var(--text-muted); font-size: 1.2rem;">Distribution of miscarriage cases across age groups among the 75 participants.</p> 
+<div class="chart-wrapper"> 
+    <div class="chart-col"> 
+        <div class="bar" style="height: 35%;">
+            <span class="bar-value">10 Cases (21.7%)</span>
+        </div> 
+        <div class="bar-label">16 – 21</div> 
+    </div> 
+    <div class="chart-col"> 
+        <div class="bar peak" style="height: 100%;">
+            <span class="bar-value">28 Cases (75.4%)</span>
+        </div> 
+        <div class="bar-label" style="color:var(--accent-pink);">22 – 27<br><small>Peak</small></div> 
+    </div> 
+    <div class="chart-col"> 
+        <div class="bar" style="height: 57%;">
+            <span class="bar-value">16 Cases (42.0%)</span>
+        </div> 
+        <div class="bar-label">28 – 33</div> 
+    </div> 
+    <div class="chart-col"> 
+        <div class="bar" style="height: 25%;">
+            <span class="bar-value">7 Cases (17.4%)</span>
+        </div> 
+        <div class="bar-label">34 – 39</div> 
+    </div> 
+    <div class="chart-col"> 
+        <div class="bar" style="height: 17%;">
+            <span class="bar-value">5 Cases (15.9%)</span>
+        </div> 
+        <div class="bar-label">40 – 46</div> 
+    </div> 
+</div> 
+<p style="margin-top:20px; font-weight: bold;">Key Finding: The 22–27 age group recorded the highest incidence, consistent with reproductive activity.</p>
+</div> 
+</div> 
+
+<div class="slide"> 
+<div class="content-box"> 
+<h2>Results: Urban vs. Rural Residency</h2> 
+<p style="color:var(--text-muted); margin-bottom:10px; font-size: 1.2rem;">Comparison of mean live births and miscarriages based on residency area.</p> 
+<div class="chart-legend"> 
+    <div class="legend-item"><div class="legend-color" style="background:var(--secondary);"></div> Mean Live Births</div> 
+    <div class="legend-item"><div class="legend-color" style="background:var(--accent-pink);"></div> Mean Miscarriages</div> 
+</div> 
+<div class="chart-wrapper"> 
+    <div class="chart-col" style="width: 25%;"> 
+        <div class="grouped-bars"> 
+            <div class="sub-bar live" style="height: 94%;"><span class="bar-value">Live: 3.0</span></div> 
+            <div class="sub-bar misc" style="height: 49%;"><span class="bar-value">Misc: 1.57</span></div> 
+        </div> 
+        <div class="bar-label">Rural (Village)</div> 
+    </div> 
+    <div class="chart-col" style="width: 25%;"> 
+        <div class="grouped-bars"> 
+            <div class="sub-bar live" style="height: 68%;"><span class="bar-value">Live: 2.2</span></div> 
+            <div class="sub-bar misc" style="height: 51%;"><span class="bar-value">Misc: 1.65</span></div> 
+        </div> 
+        <div class="bar-label">Urban (City)</div> 
+    </div> 
+</div> 
+</div> 
+</div> 
+
+<div class="slide"> 
+<div class="content-box"> 
+<h2>Results: Impact of Physical Activity</h2> 
+<p style="color:var(--text-muted); margin-bottom:10px; font-size: 1.2rem;">Maternal physical activity levels correlated with pregnancy outcomes.</p> 
+<div class="chart-legend"> 
+    <div class="legend-item"><div class="legend-color" style="background:var(--secondary);"></div> Mean Live Births</div> 
+    <div class="legend-item"><div class="legend-color" style="background:var(--accent-pink);"></div> Mean Miscarriages</div> 
+</div> 
+<div class="chart-wrapper"> 
+    <div class="chart-col" style="width: 20%;"> 
+        <div class="grouped-bars"> 
+            <div class="sub-bar live" style="height: 98%;"><span class="bar-value">Live: 3.14</span></div> 
+            <div class="sub-bar misc" style="height: 51%;"><span class="bar-value">Misc: 1.64</span></div> 
+        </div> 
+        <div class="bar-label">Strong Activity</div> 
+    </div> 
+    <div class="chart-col" style="width: 20%;"> 
+        <div class="grouped-bars"> 
+            <div class="sub-bar live" style="height: 76%;"><span class="bar-value">Live: 2.46</span></div> 
+            <div class="sub-bar misc" style="height: 48%;"><span class="bar-value">Misc: 1.54</span></div> 
+        </div> 
+        <div class="bar-label">Normal Activity</div> 
+    </div> 
+    <div class="chart-col" style="width: 20%;"> 
+        <div class="grouped-bars"> 
+            <div class="sub-bar live" style="height: 70%;"><span class="bar-value">Live: 2.24</span></div> 
+            <div class="sub-bar misc" style="height: 56%;"><span class="bar-value">Misc: 1.80</span></div> 
+        </div> 
+        <div class="bar-label">Weak Activity</div> 
+    </div> 
+</div> 
+</div> 
+</div> 
+
+<div class="slide"> 
+<div class="content-box" style="justify-content:center;"> 
+<h1 style="font-size:2.8rem; margin-bottom:20px;">Discussion</h1> 
+<div class="grid-2"> 
+<div class="stat-box" style="background:white;"><h3 style="color:var(--primary); font-size:1.5rem;">High Miscarriage Rate</h3><p>The 56.3% recurrence rate emphasizes the silent burden of TORCH infections, specifically Rubella, in local communities.</p></div> 
+<div class="stat-box" style="background:white;"><h3 style="color:var(--primary); font-size:1.5rem;">Age Factor</h3><p>The mean age (27.7) falls perfectly within the prime reproductive window, making preconception care absolutely vital.</p></div> 
+</div> 
+</div> 
+</div> 
+
+<div class="slide"> 
+<div class="content-box" style="justify-content:center;"> 
+<h1 style="font-size:2.8rem; margin-bottom:20px;">Material & Methods</h1> 
+<div class="grid-2"> 
+<div class="stat-box" style="background:white; align-items: start; text-align: left;"><h3 style="color:var(--primary); font-size:1.5rem;">Sample Analysis</h3><p>A cohort of 75 pregnant women with historical recurrent complications across Baghdad clinics was systematically integrated into our study protocols.</p></div> 
+<div class="stat-box" style="background:white; align-items: start; text-align: left;"><h3 style="color:var(--secondary); font-size:1.4rem;">Technical Workflow</h3><p>Venous blood extractions underwent standard centrifugation parameters to isolate clear test sera, processed using lateral flow immunoassay cassette diagnostic channels.</p></div> 
+</div> 
+</div> 
+</div> 
+
+<div class="slide"> 
+<div class="content-box"> 
+<h2>Recommendations</h2> 
+<div class="grid-2"> 
+<div style="background:rgba(5, 150, 105, 0.05);padding:26px;border-radius:20px;border-left:5px solid var(--accent-green);"> 
+<h3 style="color:var(--accent-green); font-size:1.5rem;">1. Mandatory Screening</h3> 
+<p>Implement strict, compulsory pre-marital Rubella antibody (IgG/IgM) testing across all health centers.</p> 
+</div> 
+<div style="background:rgba(2, 132, 199, 0.05);padding:26px;border-radius:20px;border-left:5px solid var(--primary);"> 
+<h3 style="color:var(--primary); font-size:1.5rem;">2. Immunization</h3> 
+<p>Enhance the coverage of the MMR vaccine for women of childbearing age, ensuring immunity before conception.</p> 
+</div> 
+</div> 
+</div> 
+</div> 
+
+<div class="slide"> 
+<div class="content-box" style="justify-content:center;text-align:center;"> 
+<h2 style="border:none;font-size:3.8rem;color:var(--primary);">Thank You For Listening!</h2> 
+<p style="color:var(--secondary);font-size:2.2rem;margin-top:16px;font-weight:bold;">Any Questions?</p> 
+<div style="margin-top:20px;color:var(--text-muted);font-size:1.3rem;">College of Health and Medical Technologies | Graduation Defense 2026</div> 
+<center><button class="btn-restart" onclick="goToStartSlide()">🔄 Restart Presentation</button></center>
+</div> 
+</div> 
+
+</div> 
+
+<div class="modal-overlay" id="modal-structure"> 
+<div class="modal-content"> 
+<button class="close-btn" onclick="closeModal('modal-structure')">✖</button> 
+<h2 style="color:var(--primary);border-bottom:none;margin-bottom:10px;">Glycoproteins E1 & E2</h2> 
+<div style="background:rgba(2, 132, 199, 0.05);padding:20px;border-radius:12px;margin-top:12px;border:1px solid rgba(2, 132, 199, 0.1);"> 
+<h3 style="color:var(--primary);">E1 Glycoprotein:</h3> 
+<p style="color:var(--text-main); font-size: 1.2rem;">The primary mediator for cell attachment. It contains the main antigenic determinants (epitopes) that our immune system recognizes. It is responsible for fusing the viral membrane with the host cell endosome.</p> 
+<h3 style="color:var(--accent-pink);margin-top:16px;">E2 Glycoprotein:</h3> 
+<p style="color:var(--text-main); font-size: 1.2rem;">Works in tandem with E1. It spans the viral membrane and interacts directly with the internal Capsid (C) protein to hold the virus structure together.</p> 
+</div> 
+</div> 
+</div> 
+
+<div class="modal-overlay" id="modal-lab"> 
+<div class="modal-content"> 
+<button class="close-btn" onclick="closeModal('modal-lab')">✖</button> 
+<h2 style="color:var(--primary);border-bottom:none;margin-bottom:10px;">Cassette Result Interpretation</h2> 
+<div style="background:white;color:black;padding:22px;border-radius:12px;margin-top:12px;border:1px solid #e2e8f0;"> 
+<div style="border-left:5px solid #22c55e;padding-left:15px;margin-bottom:16px;"> 
+<h3 style="color:#16a34a;margin:0 0 5px 0;">Past Infection / Immunity (IgG +)</h3> 
+<p style="margin:0;font-size:1.1rem;color:var(--text-main);">Two lines appear: One at Control (C) and one at Test (IgG). The mother is immune.</p> 
+</div> 
+<div style="border-left:5px solid #ef4444;padding-left:15px;margin-bottom:16px;"> 
+<h3 style="color:#dc2626;margin:0 0 5px 0;">Acute / Active Infection (IgM +)</h3> 
+<p style="margin:0;font-size:1.1rem;color:var(--text-main);">Two lines appear: One at Control (C) and one at Test (IgM). High danger to the fetus.</p> 
+</div> 
+<div style="border-left:5px solid #64748b;padding-left:15px;"> 
+<h3 style="color:#475569;margin:0 0 5px 0;">Negative (No Immunity)</h3> 
+<p style="margin:0;font-size:1.1rem;color:var(--text-main);">Only the Control (C) line appears. The mother is susceptible and needs vaccination postpartum.</p> 
+</div> 
+</div> 
+</div> 
+</div> 
+
+<script> 
+let currentSlideIndex = 0; 
+const slides = document.querySelectorAll('.slide'); 
+const totalSlidesCount = slides.length; 
+
+document.getElementById('total-slides-num').innerText = totalSlidesCount;
+
+const dotsContainer = document.getElementById('dots-container'); 
+for (let i = 0; i < totalSlidesCount; i++) { 
+  const d = document.createElement('div'); 
+  d.className = 'dot' + (i === 0 ? ' active' : ''); 
+  d.onclick = () => goToSlide(i); 
+  dotsContainer.appendChild(d); 
+} 
+
+function showSlide(index) {
+  slides.forEach(s => s.style.display = 'none');
+  slides.forEach(s => s.classList.remove('active'));
+  
+  if (index >= totalSlidesCount) currentSlideIndex = 0; 
+  else if (index < 0) currentSlideIndex = totalSlidesCount - 1; 
+  else currentSlideIndex = index;
+  
+  slides[currentSlideIndex].style.display = 'flex';
+  slides[currentSlideIndex].classList.add('active');
+  
+  document.getElementById('current-slide-num').innerText = currentSlideIndex + 1;
+  document.getElementById('progress-bar').style.width = ((currentSlideIndex + 1) / totalSlidesCount) * 100 + '%';
+
+  document.querySelectorAll('.dot').forEach((d, i) => {
+    d.classList.toggle('active', i === currentSlideIndex);
+  });
+}
+
+function nextSlide() { 
+  nextSlideAction();
+} 
+function prevSlide() { 
+  prevSlideAction();
+} 
+function nextSlideAction() {
+  currentSlideIndex++; 
+  showSlide(currentSlideIndex);
+}
+function prevSlideAction() {
+  currentSlideIndex--; 
+  showSlide(currentSlideIndex);
+}
+function goToSlide(n) { 
+  currentSlideIndex = n; 
+  showSlide(currentSlideIndex); 
+} 
+function goToStartSlide() {
+  currentSlideIndex = 0;
+  showSlide(currentSlideIndex);
+}
+
+function openModal(id) { document.getElementById(id).classList.add('active'); } 
+function closeModal(id) { document.getElementById(id).classList.remove('active'); } 
+
+function showToast(msg, ms = 2500) { 
+  const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); 
+  setTimeout(() => t.classList.remove('show'), ms); 
+} 
+function toggleFullscreen() { 
+  if (!document.fullscreenElement) { document.documentElement.requestFullscreen().catch(() => showToast('Fullscreen not available')); } 
+  else { document.exitFullscreen(); } 
+} 
+function printSlide() { showToast('🖨 Opening print dialog...'); setTimeout(() => window.print(), 500); } 
+function sharePresentation() { 
+  if (navigator.share) { navigator.share({ title: 'Rubella Research Defense 2026', text: 'Interactive presentation on Rubella virus prevention during pregnancy.', url: window.location.href }); } 
+  else { navigator.clipboard.writeText(window.location.href).then(() => showToast('🔗 Link copied!')).catch(() => showToast('Copy the URL from your browser')); } 
+} 
+
+document.getElementById('presentation-container').addEventListener('click', function(e) { 
+  if (e.target.tagName !== 'BUTTON' && !e.target.closest('button') && !e.target.closest('.modal-content') && !e.target.classList.contains('bar') && !e.target.classList.contains('sub-bar')) 
+    nextSlideAction(); 
+}); 
+
+document.querySelectorAll('.modal-overlay').forEach(o => o.addEventListener('click', function(e) { 
+  if (e.target === this) this.classList.remove('active'); 
+})); 
+
+document.addEventListener('keydown', e => { 
+  if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlideAction(); } 
+  if (e.key === 'ArrowLeft') prevSlideAction(); 
+  if (e.key === 'f' || e.key === 'F') toggleFullscreen();
+  if (e.key === 'Escape') document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active')); 
+}); 
+
+showSlide(currentSlideIndex); 
+</script> 
+</body> 
+</html>
